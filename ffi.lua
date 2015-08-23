@@ -109,6 +109,14 @@ cudnnStatus_t cudnnSetFilterNdDescriptor(cudnnFilterDescriptor_t filterDesc,
 cudnnStatus_t cudnnDestroyFilterDescriptor( cudnnFilterDescriptor_t filterDesc);
 cudnnStatus_t
    cudnnCreateConvolutionDescriptor(cudnnConvolutionDescriptor_t *convDesc );
+cudnnStatus_t cudnnSetConvolutionNdDescriptor( cudnnConvolutionDescriptor_t convDesc,
+                                                           int arrayLength,
+                                                           const int padA[],
+                                                           const int filterStrideA[],
+                                                           const int upscaleA[],
+                                                           cudnnConvolutionMode_t mode
+                                                         );
+
 cudnnStatus_t
 cudnnSetConvolutionNdDescriptor_v3( cudnnConvolutionDescriptor_t convDesc,
 				    int arrayLength,

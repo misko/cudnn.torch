@@ -38,7 +38,7 @@ function SpatialConvolution:resetWeightDescriptors()
                                  self.nInputPlane/self.groups,
                                  self.kH, self.kW})
    errcheck('cudnnSetFilterNdDescriptor', self.weightDesc[0],
-            'CUDNN_DATA_FLOAT', 4,
+            'CUDNN_DATA_HALF', 4,
             desc:data());
    local function destroyWDesc(d)
       errcheck('cudnnDestroyFilterDescriptor', d[0]);
@@ -105,10 +105,13 @@ function SpatialConvolution:createIODescriptors(input)
          local pad = torch.IntTensor({self.padH, self.padW})
          local stride = torch.IntTensor({self.dH, self.dW})
          local upscale = torch.IntTensor({1,1})
-         errcheck('cudnnSetConvolutionNdDescriptor_v3', self.convDesc[0],
+         errcheck('cudnnSetConvolutionNdDescriptor', self.convDesc[0],
                   2, pad:data(),
-                  stride:data(), upscale:data(), 'CUDNN_CROSS_CORRELATION',
-		  'CUDNN_DATA_FLOAT');
+                  stride:data(), upscale:data(), 'CUDNN_CROSS_CORRELATION');
+         -- errcheck('cudnnSetConvolutionNdDescriptor_v3', self.convDesc[0],
+         --          2, pad:data(),
+         --          stride:data(), upscale:data(), 'CUDNN_CROSS_CORRELATION',
+	 --          'CUDNN_DATA_HALF');
          local function destroyConvDesc(d)
             errcheck('cudnnDestroyConvolutionDescriptor', d[0]);
          end
